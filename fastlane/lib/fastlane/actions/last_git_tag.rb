@@ -2,7 +2,7 @@ module Fastlane
   module Actions
     class LastGitTagAction < Action
       def self.run(params)
-        Actions.last_git_tag_name(true, params[:pattern])
+        Actions.last_git_tag_name(true, params[:pattern], params[:remote])
       end
 
       #####################################################
@@ -18,7 +18,12 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :pattern,
                                        description: "Pattern to filter tags when looking for last one. Limit tags to ones matching given shell glob. If pattern lacks ?, *, or [, * at the end is implied",
                                        default_value: nil,
-                                       optional: true)
+                                       optional: true),
+          FastlaneCore::ConfigItem.new(key: :remote,
+                                       description: "Whether to check remote. Defaults to `false`",
+                                       type: Boolean,
+                                       default_value: false,
+                                       optional: true),
         ]
       end
 
@@ -49,6 +54,7 @@ module Fastlane
         [
           'last_git_tag',
           'last_git_tag(pattern: "release/v1.0/")'
+          'last_git_tag(pattern: "release/v1.0/", remote: true)'
         ]
       end
 
